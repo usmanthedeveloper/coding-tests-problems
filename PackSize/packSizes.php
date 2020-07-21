@@ -10,7 +10,13 @@
 </html>
 <br><br>Available Pack Sizes: 500, 250, 1000, 2000, 5000<br>
 
+
+
+
 <?php
+
+//The above is a form to help test this problem!
+
 $packetReqUser = $_POST['reqPacketSize'];
 print "<br>";
 
