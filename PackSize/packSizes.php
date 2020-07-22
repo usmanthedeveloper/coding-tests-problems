@@ -2,16 +2,13 @@
 <form method="POST">
     Packet Size
     <br>
-    <input type="text" name="reqPacketSize" id="reqPacketSize" value="<?php if(isset($_POST['reqPacketSize'])) echo $_POST['reqPacketSize']; ?>"></input>
+    <input type="text" name="reqPacketSize" id="reqPacketSize" value="<?php if (isset($_POST['reqPacketSize'])) echo $_POST['reqPacketSize']; ?>"></input>
     <br>
     <input type="submit"></input>
 </form>
 
 </html>
 <br><br>Available Pack Sizes: 500, 250, 1000, 2000, 5000<br>
-
-
-
 
 <?php
 
@@ -46,7 +43,7 @@ function getPacks($requestNum)
     if ($requestNum <= $min) {
         return array($min);
     }
-    
+
     //Simple case, if we have an exact match for packet size of a requested amount we will issue this and keep the packs at a minimum 1x!
     if (in_array($requestNum, $packSizesAvailabile)) {
         return array($requestNum);
@@ -57,8 +54,6 @@ function getPacks($requestNum)
         $maxValue = $max;
     } else {
         $maxValue = findMaxValue($requestNum, $packSizesAvailabile);
-        //Unsure if the low value is needed now!
-        $lowValue = findLowValue($requestNum, $packSizesAvailabile);
     }
 
     $maxValueIndex = array_search($maxValue, $packSizesAvailabile);
@@ -66,20 +61,52 @@ function getPacks($requestNum)
     $requestAmountRemaining = $requestNum;
     $packAmtFinal = array();
     while ($requestAmountRemaining != 0) {
-        $checkQtyPacks = 0;
-        $remainderMod = $maxValue % $requestNum;
-        if ($remainderMod == 0) {
-            $checkQtyPacks = $maxValueIndex / $requestNum;
-        } else {
-            
+
+        if ($requestAmountRemaining > $max) {
+            $division = floor($requestAmountRemaining / $max);
+            $requestAmountRemaining = $requestAmountRemaining % $max;
+            $packAmtFinal[$max] = $division;
         }
 
-        for ($i = 0; $i < $checkQtyPacks; $i++) {
-            $packAmtFinal[] = $maxValueIndex;
-            $requestAmountRemaining -= $requestNum;
+        $maxValue = findMaxValue($requestAmountRemaining, $packSizesAvailabile);
+
+        if ($requestAmountRemaining == $maxValue) {
+            $packAmtFinal[$maxValue] = 1;
+        } else {
+            $diff = $max - $requestAmountRemaining;
         }
+
+        permuteCalculationDiff($requestAmountRemaining, $packSizesAvailabile);
+        exit;
     }
     return $packAmtFinal;
+}
+
+function permuteCalculationDiff($requestAmt, $packSizesAvailabile)
+{
+    $perms = permuteCalculation($packSizesAvailabile);
+    print_r($perms);
+    foreach ($perms as $key => $total) {
+
+        if ($key > $requestAmt) {
+            break;
+        }
+
+        foreach ($total as $key2 => $actualTotal) {
+        }
+    }
+}
+
+function permuteCalculation($packSizesAvailabile)
+{
+    $permuteArray = array();
+
+    foreach ($packSizesAvailabile as $size) {
+        foreach ($packSizesAvailabile as $permuteSize) {
+            $permuteArray[$size][$permuteSize] = $size + $permuteSize;
+        }
+    }
+    return $permuteArray;
 }
 
 function findMaxValue($number, $array = array())
