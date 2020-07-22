@@ -73,40 +73,24 @@ function getPacks($requestNum)
         if ($requestAmountRemaining == $maxValue) {
             $packAmtFinal[$maxValue] = 1;
         } else {
-            $diff = $max - $requestAmountRemaining;
-        }
+            $diffMaxValue = $max - $requestAmountRemaining;
+            $diffSet = array();
+            foreach ($packSizesAvailabile as $packSize) {
+                if ($packSize > $maxValue) {
+                    break;
+                }
 
-        permuteCalculationDiff($requestAmountRemaining, $packSizesAvailabile);
-        exit;
+                $checkedAll = false;
+
+                while (!$checkedAll) {
+
+
+            
+                }
+            }
+        }
     }
     return $packAmtFinal;
-}
-
-function permuteCalculationDiff($requestAmt, $packSizesAvailabile)
-{
-    $perms = permuteCalculation($packSizesAvailabile);
-    print_r($perms);
-    foreach ($perms as $key => $total) {
-
-        if ($key > $requestAmt) {
-            break;
-        }
-
-        foreach ($total as $key2 => $actualTotal) {
-        }
-    }
-}
-
-function permuteCalculation($packSizesAvailabile)
-{
-    $permuteArray = array();
-
-    foreach ($packSizesAvailabile as $size) {
-        foreach ($packSizesAvailabile as $permuteSize) {
-            $permuteArray[$size][$permuteSize] = $size + $permuteSize;
-        }
-    }
-    return $permuteArray;
 }
 
 function findMaxValue($number, $array = array())
@@ -117,17 +101,5 @@ function findMaxValue($number, $array = array())
         if ($value >= $number) {
             return $value;
         }
-    }
-}
-
-function findLowValue($number, $array = array())
-{
-
-    $previous = 0;
-    foreach ($array as $value) {
-        if ($value >= $number) {
-            return $previous;
-        }
-        $previous = $value;
     }
 }
