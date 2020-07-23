@@ -60,32 +60,32 @@ function getPacks($requestNum)
 
     $requestAmountRemaining = $requestNum;
     $packAmtFinal = array();
-    while ($requestAmountRemaining != 0) {
 
-        if ($requestAmountRemaining > $max) {
-            $division = floor($requestAmountRemaining / $max);
-            $requestAmountRemaining = $requestAmountRemaining % $max;
-            $packAmtFinal[$max] = $division;
-        }
+    if ($requestAmountRemaining > $max) {
+        $division = floor($requestAmountRemaining / $max);
+        $requestAmountRemaining = $requestAmountRemaining % $max;
+        $packAmtFinal[$max] = $division;
+    }
 
-        $maxValue = findMaxValue($requestAmountRemaining, $packSizesAvailabile);
+    $maxValue = findMaxValue($requestAmountRemaining, $packSizesAvailabile);
 
-        if ($requestAmountRemaining == $maxValue) {
-            $packAmtFinal[$maxValue] = 1;
-        } else {
-            $diffMaxValue = $max - $requestAmountRemaining;
-            $diffSet = array();
-            foreach ($packSizesAvailabile as $packSize) {
-                if ($packSize > $maxValue) {
-                    break;
-                }
+    if ($requestAmountRemaining == $maxValue) {
+        $packAmtFinal[$maxValue] = 1;
+    } else {
+        $diffMaxValue = $max - $requestAmountRemaining;
+        $packSizeCount = count($packSizesAvailabile);
+        $diffSet = array();
+        $packSizesElegible = array();
+        foreach ($packSizesAvailabile as $packSize) {
+            if ($packSize > $maxValue) {
+                break;
+            }
 
-                $checkedAll = false;
+            for ($i = 0; $i <= $packSizeCount; $i++) {
 
-                while (!$checkedAll) {
-
-
-            
+                $foundPossible = false;
+                while ($foundPossible) {
+                    $total = $i + $packSize;
                 }
             }
         }
