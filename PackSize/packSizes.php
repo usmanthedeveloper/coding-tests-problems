@@ -66,11 +66,11 @@ function getPacks($requestNum)
         print "CURMAX: $curMaxValue <br>";
         print "CURMIN: $curMinValue <br>";
         if ($requestAmountRemaining > $curMaxValue && $curMaxValue == $maxPackSize) {
-            $packToCheck = $maxPackSize;
+            $packToCheck = $curMaxValue;
         } else {
             $packToCheck = $curMinValue;
         }
-        print "Pack to Check Value | $requestAmountRemaining <br>";
+        print "Pack to Check Value | $packToCheck <br>";
         if ($packToCheck < $requestAmountRemaining) {
         $requestAmountRemaining = $requestAmountRemaining % $packToCheck;
         if ($requestAmountRemaining != 0) {
@@ -79,16 +79,9 @@ function getPacks($requestNum)
             }
         }
 
-
-
-
-
-
         print "DIVISION: $division <br>";
         print "MOD: $requestAmountRemaining <br>";
         print "DIVISION: $requestNum <br>";
-        print "PREVDIFF | $previousDiff<br>";
-        print "DIFF | $curDiff<br>";
         print "END<br><br>";
 
         $x++;
