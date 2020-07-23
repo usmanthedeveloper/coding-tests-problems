@@ -50,6 +50,68 @@ function getPacks($requestNum)
     }
 
     //It would be wise to find out the value that is higher than the requested amount so we can work our way to pack sizes below that as anything much higher will be irrelevant.
+
+
+    $requestAmountRemaining = $requestNum;
+    $x = 0;
+    $previousDiff = 0;
+    $curDiff = 0;
+    $maxPackSize = max($packSizesAvailabile);
+    while ($requestAmountRemaining > 0) {
+        $curMaxValue = findMaxValue($requestAmountRemaining, $packSizesAvailabile);
+        $curMinValue = findLowValue($requestAmountRemaining, $packSizesAvailabile);
+
+        print "START<br>";
+        print "Request Amt Remaining | $requestAmountRemaining <br>";
+        print "CURMAX: $curMaxValue <br>";
+        print "CURMIN: $curMinValue <br>";
+        if ($requestAmountRemaining > $curMaxValue && $curMaxValue == $maxPackSize) {
+            $packToCheck = $maxPackSize;
+        } else {
+            $packToCheck = $curMinValue;
+        }
+        print "Pack to Check Value | $requestAmountRemaining <br>";
+        if ($packToCheck < $requestAmountRemaining) {
+        $requestAmountRemaining = $requestAmountRemaining % $packToCheck;
+        if ($requestAmountRemaining != 0) {
+            
+                $division = floor($requestAmountRemaining / $packToCheck);
+            }
+        }
+
+
+
+
+
+
+        print "DIVISION: $division <br>";
+        print "MOD: $requestAmountRemaining <br>";
+        print "DIVISION: $requestNum <br>";
+        print "PREVDIFF | $previousDiff<br>";
+        print "DIFF | $curDiff<br>";
+        print "END<br><br>";
+
+        $x++;
+        if ($x > 10) break;
+    }
+
+
+
+
+    return array();
+    $curMaxValue = findMaxValue($requestNum, $packSizesAvailabile);
+    $curMinValue = findLowValue($requestNum, $packSizesAvailabile);
+
+    if ($requestNum > $curMaxValue) {
+        $requestAmountRemaining = $requestNum % $curMaxValue;
+        $division = floor($requestNum / $curMaxValue);
+    }
+
+
+
+
+
+
     if ($requestNum > $max) {
         $maxValue = $max;
     } else {
@@ -61,32 +123,34 @@ function getPacks($requestNum)
     $requestAmountRemaining = $requestNum;
     $packAmtFinal = array();
 
+
+
+
+
+
+
     if ($requestAmountRemaining > $max) {
         $division = floor($requestAmountRemaining / $max);
         $requestAmountRemaining = $requestAmountRemaining % $max;
         $packAmtFinal[$max] = $division;
     }
 
-    $maxValue = findMaxValue($requestAmountRemaining, $packSizesAvailabile);
-
     if ($requestAmountRemaining == $maxValue) {
         $packAmtFinal[$maxValue] = 1;
     } else {
+        $diffSet = $packSizesElegible = array();
         $diffMaxValue = $max - $requestAmountRemaining;
         $packSizeCount = count($packSizesAvailabile);
-        $diffSet = array();
-        $packSizesElegible = array();
-        foreach ($packSizesAvailabile as $packSize) {
-            if ($packSize > $maxValue) {
-                break;
-            }
 
-            for ($i = 0; $i <= $packSizeCount; $i++) {
+        $amountLeft = $requestAmountRemaining;
+        $stilPacking = true;
+        while ($stilPacking) {
+            $maxValue = findMaxValue($amountLeft, $packSizesAvailabile);
+            $division = floor($amountLeft / $max);
+            $mod = $requestAmountRemaining % $max;
 
-                $foundPossible = false;
-                while ($foundPossible) {
-                    $total = $i + $packSize;
-                }
+            if ($mod != 0) {
+                $mod = $maxValue + $maxValue;
             }
         }
     }
@@ -95,11 +159,35 @@ function getPacks($requestNum)
 
 function findMaxValue($number, $array = array())
 {
+    $max = max($array);
+
+    if ($number > $max) {
+        return $max;
+    }
 
     foreach ($array as $value) {
 
         if ($value >= $number) {
             return $value;
         }
+    }
+}
+
+function findLowValue($number, $array = array())
+{
+    $min = min($array);
+    $max = max($array);
+
+    if ($number > $max) {
+        $number = $max;
+    }
+
+    $previous = 0;
+    foreach ($array as $value) {
+
+        if ($value >= $number) {
+            return $previous;
+        }
+        $previous = $value;
     }
 }
