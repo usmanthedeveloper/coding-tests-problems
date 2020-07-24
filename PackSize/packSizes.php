@@ -88,66 +88,7 @@ function getPacks($requestNum)
         if ($x > 10) break;
     }
 
-
-
-
     return array();
-    $curMaxValue = findMaxValue($requestNum, $packSizesAvailabile);
-    $curMinValue = findLowValue($requestNum, $packSizesAvailabile);
-
-    if ($requestNum > $curMaxValue) {
-        $requestAmountRemaining = $requestNum % $curMaxValue;
-        $division = floor($requestNum / $curMaxValue);
-    }
-
-
-
-
-
-
-    if ($requestNum > $max) {
-        $maxValue = $max;
-    } else {
-        $maxValue = findMaxValue($requestNum, $packSizesAvailabile);
-    }
-
-    $maxValueIndex = array_search($maxValue, $packSizesAvailabile);
-
-    $requestAmountRemaining = $requestNum;
-    $packAmtFinal = array();
-
-
-
-
-
-
-
-    if ($requestAmountRemaining > $max) {
-        $division = floor($requestAmountRemaining / $max);
-        $requestAmountRemaining = $requestAmountRemaining % $max;
-        $packAmtFinal[$max] = $division;
-    }
-
-    if ($requestAmountRemaining == $maxValue) {
-        $packAmtFinal[$maxValue] = 1;
-    } else {
-        $diffSet = $packSizesElegible = array();
-        $diffMaxValue = $max - $requestAmountRemaining;
-        $packSizeCount = count($packSizesAvailabile);
-
-        $amountLeft = $requestAmountRemaining;
-        $stilPacking = true;
-        while ($stilPacking) {
-            $maxValue = findMaxValue($amountLeft, $packSizesAvailabile);
-            $division = floor($amountLeft / $max);
-            $mod = $requestAmountRemaining % $max;
-
-            if ($mod != 0) {
-                $mod = $maxValue + $maxValue;
-            }
-        }
-    }
-    return $packAmtFinal;
 }
 
 function findMaxValue($number, $array = array())
