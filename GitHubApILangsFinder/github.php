@@ -1,26 +1,29 @@
 <?php
 //Testing language analysis from GitHUB API
-
+require_once 'token.php';
 
 class GitHubLangChecker
+
 {
 
-    var $token = "596388b278c5df6583efee31631ee903516cd885";
-    var $baseURL = "https://api.github.com";
-    var $username = "";
+    var $baseURL = "https://api.github.com/";
+    var $username;
+    var $token;
 
-    function __construct($username)
+    function __construct($username, $token)
     {
 
-        $this->$username = $username;
+        $this->username = $username;
+        $this->token = $token;
     }
 
     function createConn($pathURL)
     {
 
-        header('Content-Type: application/json');
-        $ch = curl_init($this->baseURL . $this->token);
-        $authorization = "Authorization: Bearer " . $pathURL; // Prepare the authorisation token
+        //header('Content-Type: application/json');
+        $url = $this->baseURL . $pathURL;
+        $ch = curl_init($url);
+        $authorization = "Authorization: Bearer " . $this->token; // Prepare the authorisation token
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
         $config['useragent'] = 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0';
         curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
@@ -33,8 +36,7 @@ class GitHubLangChecker
     function getRepositories()
     {
 
-        echo $this->createConn("users/" . $this->username);
-
+        return $this->createConn("users/" . $this->username . "/repos");
     }
 
     function getLangs()
@@ -42,9 +44,11 @@ class GitHubLangChecker
 
         //Get repos of user first
         //https://api.github.com/repos/jbj/avl_tree_set_rs/languages
-        echo $this->createConn("users/" . $this->username);
+        $array = json_decode($this->getRepositories(), true);
+        var_dump($array);
+        
     }
 }
 
-$gitHubLangCheck = new GitHubLangChecker($jbj);
-$gitHubLangCheck->getRepositories();
+$gitHubLangCheck = new GitHubLangChecker("jbj", $token);
+$gitHubLangCheck->getLangs();
